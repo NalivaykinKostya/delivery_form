@@ -1,0 +1,334 @@
+<!-- <!DOCTYPE html> -->
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Заявка на курьера АО ГЛОНАСС</title>
+	<link rel="icon" type="image/png" sizes="16x16" href="http://aoglonass.ru/templates/default//favicon/favicon-16x16.png">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+	<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/fdgs.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/GoogleMap.js') }}"></script>
+	<!-- <script src="{{ url_for('static', filename='js/refresh_token.js') }}"></script>	 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+  
+  var script_url = "https://script.google.com/macros/s/AKfycbzkmbNVbRsqNHjCe_y010sAjY0eAQZbbf2eOyFeEw3fwM4EjaZ9/exec";
+  
+  // Make an AJAX call to Google Script
+  function insert_value() {
+    
+	$("#re").css("visibility","hidden");
+	 document.getElementById("loader").style.visibility = "visible";
+	$('#mySpinner').addClass('spinner');
+ 
+	var delivery_type=$("#delivery_type").val();
+	var company_adress=$("#autocomplete").val();
+	var company=$("#company").val();
+	var contact_person=$("#contact_person").val();
+	var contact_phone=$("#contact_phone").val();
+	var date=$("#date").val();
+	
+	
+    var url = script_url+"?callback=ctrlq&delivery_type="+delivery_type+"&company_adress="+company_adress+"&company="+company+"&contact_person="+contact_person+"&contact_phone="+contact_phone+"&date="+date+"&action=insert";
+  
+ 
+    var request = jQuery.ajaxSetup({
+      crossDomain: true,
+      url: url ,
+      method: "POST",
+      dataType: "jsonp"
+    });
+ 
+  }
+  
+  
+  function update_value(){
+	$("#re").css("visibility","hidden");
+     document.getElementById("loader").style.visibility = "visible";
+	
+	
+	var id1=$("#id").val();
+	var name= $("#name").val();
+	
+	
+	
+    var url = script_url+"?callback=ctrlq&name="+name+"&id="+id1+"&action=update";
+  
+ 
+    var request = jQuery.ajaxSetup({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+ 	
+  }
+ 
+  
+ 
+  
+  
+  function delete_value(){
+	$("#re").css("visibility","hidden");
+     document.getElementById("loader").style.visibility = "visible";
+	$('#mySpinner').addClass('spinner');
+	var id1 = $("#id").val();
+	var name = $("#name").val();
+	
+	
+    var url = script_url+"?callback=ctrlq&name="+name+"&id="+id1+"&action=delete";
+  
+ 
+    var request = jQuery.ajaxSetup({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+ 
+  }
+ 
+ 
+  
+  
+  // print the returned data
+  function ctrlq(e) {
+  
+	
+	$("#re").html(e.result);
+	$("#re").css("visibility","visible");
+	read_value();
+	
+  }
+  
+  
+ 
+  
+function read_value() {
+ 
+	$("#re").css("visibility","hidden");
+   
+	document.getElementById("loader").style.visibility = "visible";
+ 	var url = script_url+"?action=read";
+ 
+	$.getJSON(url, function (json) {
+ 
+    // Set the variables from the results array
+ 
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+ 		table.className = "table table-hover";
+		
+        var header = table.createTHead();
+		var row = header.insertRow(0);     
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);		
+		var cell5 = row.insertCell(4);
+		var cell6 = row.insertCell(5);
+
+		cell1.innerHTML = "<b>Тип отправки</b>";
+		cell2.innerHTML = "<b>Адрес компании</b>";
+		cell3.innerHTML = "<b>Название компании</b>";
+		cell4.innerHTML = "<b>Контактое лицо</b>";
+		cell5.innerHTML = "<b>Контактный телефон</b>";
+		cell6.innerHTML = "<b>Дата доставки</b>";		
+        
+ 		var tBody = document.createElement("tbody");
+        table.appendChild(tBody);
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < json.records.length; i++) {
+ 			var today = new Date();
+ 			// var day = json.records[i].date.slice(0,10)
+ 			var day = json.records[i].date;
+ 			var a = moment.parseZone(day, 'YYYY MM DD ZZ');
+ 			a = a.local().format()
+
+ 			today.setDate(today.getDate());
+ 			today.toISOString().slice(0,10);
+ 			console.log(today.toISOString().slice(0,10))
+ 			console.log(day)
+ 			console.log(a)
+ 			if (today.toISOString().slice(0,10) == day){
+            	var tr = tBody.insertRow(-1);
+					var tabCell = tr.insertCell(-1);
+	                tabCell.innerHTML = json.records[i].delivery_type;
+					tabCell = tr.insertCell(-1);
+					tabCell.innerHTML = json.records[i].company_adress;
+					tabCell = tr.insertCell(-1);
+	                tabCell.innerHTML = json.records[i].company;
+					tabCell = tr.insertCell(-1);
+					tabCell.innerHTML = json.records[i].contact_person;
+					tabCell = tr.insertCell(-1);
+	                tabCell.innerHTML = json.records[i].contact_phone;
+					tabCell = tr.insertCell(-1);
+					tabCell.innerHTML = json.records[i].date;	
+				}			
+            }
+       // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+		document.getElementById("loader").style.visibility = "hidden";
+		$("#re").css("visibility","visible");
+    });
+	}
+
+ function read_value2() {
+ 
+$("#re").css("visibility","hidden");
+   
+	document.getElementById("loader").style.visibility = "visible";
+ 	var url = script_url+"?action=read";
+ 
+$.getJSON(url, function (json) {
+ 
+    // Set the variables from the results array
+ 
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+ 		table.className = "table table-hover";
+		
+        var header = table.createTHead();
+		var row = header.insertRow(0);     
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);		
+		var cell5 = row.insertCell(4);
+		var cell6 = row.insertCell(5);
+
+		cell1.innerHTML = "<b>Тип отправки</b>";
+		cell2.innerHTML = "<b>Адрес компании</b>";
+		cell3.innerHTML = "<b>Название компании</b>";
+		cell4.innerHTML = "<b>Контактое лицо</b>";
+		cell5.innerHTML = "<b>Контактный телефон</b>";
+		cell6.innerHTML = "<b>Дата доставки</b>";		
+        
+ 		var tBody = document.createElement("tbody");
+        table.appendChild(tBody);
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < json.records.length; i++) {
+ 			var today = new Date()
+ 			var day = json.records[i].date.slice(0,10)
+ 			today.setDate(today.getDate() - 1);
+ 			today.toISOString().slice(0,10)
+ 			console.log(today.toISOString().slice(0,10))
+ 			console.log(day)
+ 			if (today.toISOString().slice(0,10) == day){
+            	var tr = tBody.insertRow(-1);
+					var tabCell = tr.insertCell(-1);
+	                tabCell.innerHTML = json.records[i].delivery_type;
+					tabCell = tr.insertCell(-1);
+					tabCell.innerHTML = json.records[i].company_adress;
+					tabCell = tr.insertCell(-1);
+	                tabCell.innerHTML = json.records[i].company;
+					tabCellhfgf = tr.insertCell(-1);
+					tabCell.innerHTML = json.records[i].contact_person;
+					tabCell = tr.insertCell(-1);
+	                tabCell.innerHTML = json.records[i].contact_phone;
+					tabCell = tr.insertCell(-1);
+					tabCell.innerHTML = day;	
+				}			
+            }     
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+		document.getElementById("loader").style.visibility = "hidden";
+		$("#re").css("visibility","visible");
+    });
+	}
+  
+  </script>
+</head>
+<body>
+<div class="container">
+	<form id="form-id" class="mt-5 mb-5 col-9 mx-auto bg-info">
+		<div class="form-group col-3">
+			<label for="exampleFormControlSelect1">Укажите способ доставки</label>
+			<select class="form-control" id="delivery_type" name='delivery_type'>
+				<option>Курьером</option>
+				<option>Почта России</option>
+			</select>
+		</div>	
+		<div class="form-group col-6" id="locationField">
+			<input id="autocomplete" class="form-control" type="text" name='company_adress' placeholder="Укажите адрес доставки">
+		</div>
+		<div class="form-group col-6">
+			<label class="sr-only" for="emailInput">Название организации.</label>
+			<input type="text" class="form-control" id="company" name='company' placeholder="Укажите название организации">
+		</div>
+		<div class="form-group col-8 row no-gutters">
+			<div class="form-group col">
+				<label class="sr-only" for="nameInput">Контактное лицо</label>
+				<input type="text" class="form-control" id="contact_person" name='contact_person' placeholder="Укажите контактное лицо">
+			</div>
+			<div class="form-group col">
+				<label class="sr-only" for="nameInput">Телефон</label>
+				<input type="text" class="form-control" id="contact_phone" name='contact_phone' placeholder="Укажите контакный телефон">
+			</div>
+		</div>
+
+		<div class="form-group col-4">
+			<label for="date">Дата доставки</label>
+			<input type="date" class="form-control" id="date" name="date" placeholder="Дата" required>
+<!-- 			<input type="hidden" name="fvv" value="1">
+			<input type="hidden" name="draftResponse" value="[null,null,&quot;-2668815453009967200&quot;]">
+			<input type="hidden" name="pageHistory" value="0">
+			<input type="hidden" name="fbzx" value="-2668815453009967200"> -->
+		</div>
+
+		<button type="submit" class="btn btn-success">Submit</button>
+	</form>
+	<br>
+	<div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+	<div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
+	 
+	<div id="loader"></div>
+	 
+	<p id="re"></p>
+	 
+	<input type="button" class="btn btn-success" id = "b1"  onclick="insert_value()" value="Insert" />
+	<input type="button" class="btn btn-success" onclick="read_value()" value="ReadTomorrow" />
+	<input type="button" class="btn btn-success" onclick="read_value2()" value="ReadToday" />
+	<input type="button" class="btn btn-success" onclick="update_value()" value="Update" />
+	<input type="button" class="btn btn-success" onclick="delete_value()" value="Delete" />
+	<input type="button" class="btn btn-success" onclick="initMap()" value="PaintMap" />
+	<a href="https://docs.google.com/spreadsheets/d/1fJ1simtUe-zD0QImyXey6r72Pg9VoZBjrMYOgZkCKT0/edit?usp=sharing" target="_blank">Click here to open Spread Sheet </a>
+	<div class="container mx-auto">
+		<div id="showData" class="mt-5"></div>
+		<div id="map" style="width: 100%; height: 500px;"></div>		
+	</div>
+
+</div>
+<script>
+      function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+            {types: ['geocode']});
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+      }	
+</script>
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBe3d14xA1RMNC1vNEVhSIVEi4NILAT9D0&libraries=places"></script> -->
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBe3d14xA1RMNC1vNEVhSIVEi4NILAT9D0&libraries=places&callback=initAutocomplete" async defer></script> -->
+<script async defer src="//maps.googleapis.com/maps/api/js?key=AIzaSyBe3d14xA1RMNC1vNEVhSIVEi4NILAT9D0&libraries=places&callback=initAutocomplete"></script>
+</body>
+</html>
+
+
+
+
