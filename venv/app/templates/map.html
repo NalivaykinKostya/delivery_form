@@ -1,0 +1,309 @@
+<!-- <!DOCTYPE html> -->
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>{{title}}</title>
+	<link rel="icon" type="image/png" sizes="16x16" href="http://aoglonass.ru/templates/default//favicon/favicon-16x16.png">
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js"></script> -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+	<!-- <script src="{{ url_for('static', filename='js/form.js') }}"></script> -->
+	<script src="{{ url_for('static', filename='js/fdgs.js') }}"></script>
+	<!-- <script src="{{ url_for('static', filename='js/GoogleMap.js') }}"></script> -->
+	<!-- <script src="{{ url_for('static', filename='js/refresh_token.js') }}"></script>	 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script> -->
+	<style type="text/css">
+		.wrapper {
+			position: fixed;
+			top: 90px;
+			left: 5px;
+			text-align: center;	
+			width: 200px;
+		}
+		.fotoEmployer{
+			border: 1px;
+			border-style: solid; 
+			width: 160px;
+			height: 200px;
+		}
+		.infoEmployer h6{
+			margin-bottom: 0rem;
+		}
+		#position{
+			 font-weight: bold;
+		}
+		li {
+		    display: inline;
+		    float: left;
+		    width:25%;
+		    cursor: pointer;
+		}
+		ul {
+		    display: block;
+		}
+		li.selected {
+		    background-color: #CCCCCC;
+		    text-shadow: 0px 1px 1px #4d4d4d;   
+		}
+		#boundlist td, #boundlist th {
+			padding: 0.3rem; 
+
+		}
+		#boundList tr:hover {
+		    background-color: rgba(0,0,0,0.175);
+		    cursor: pointer; 
+		}
+	</style>
+	<script src="https://rawgit.com/jamietre/ImageMapster/master/dist/jquery.imagemapster.min.js"></script>
+</head>
+<body>
+
+<a href="/map">Главная</a>	
+
+<div class="container" style="margin-top: 485px">
+	
+	
+	<div style="width:1200px;margin-top:-510px;height:510px;position: fixed;">
+		<button type="submit" id='btn1' class="btn btn-info fixed-bottom position-absolute">Поиск</button>
+		<form class="form-inline d-none fixed-bottom position-absolute" id='form1' action="process" method="post">
+			<div class="form-group">
+				<input type="text" class="form-control"  name="name" placeholder="Введите текст..." required>
+			</div>
+			<button type="submit" class="btn btn-success">Поиск</button>
+		</form>
+		<img src="{{ url_for('static', filename='img/schema.jpg') }}" usemap="#plan" id="plan" alt="" style="border: 0px; position: relative; left: 0px; top: 0px; padding: 0px; opacity: 0; width:1200px;height:510px;">
+	</div>
+		<map id="plan" name="plan">
+			<area state="room_1" shape="rect" alt="" coords="929,586,1021,766" href="#" title="Кабинет 1" />
+			<area state="room_3" shape="rect" alt="" coords="925,500,1018,547" href="#" title="Кабинет 3" />
+			<area state="room_4" shape="rect" alt="" coords="925,445,1018,496" href="#" title="Кабинет 4" />
+			<area state="room_5" shape="rect" alt="" coords="925,370,1018,441" href="#" title="Кабинет 5" />
+			<area state="room_6" shape="poly" alt="" coords="824,400,858,400,858,428,895,428,895,477,854,477,854,497,824,497" href="#" title="Кабинет 6" />
+			<area state="room_7" shape="rect" alt="" coords="824,501,895,548" href="#" title="Кабинет 7" />
+			<area state="room_8" shape="poly" alt="" coords="824,552,895,552,895,609,867,608,867,599,824,599" href="#" title="Кабинет 8" />
+
+			<area state="room_11" shape="rect" alt="" coords="878,691,926,766" href="#" title="Кабинет 11" />
+			<area state="room_12" shape="rect" alt="" coords="824,691,875,766" href="#" title="Кабинет 12" />
+			<area state="room_10" shape="rect" alt="" coords="740,691,822,766" href="#" title="Кабинет 10" />
+			<area state="room_14" shape="rect" alt="" coords="647,691,738,766" href="#" title="Кабинет 14" />
+			<area state="room_16" shape="rect" alt="" coords="385,665,465,766" href="#" title="Кабинет 16" />
+			<area state="room_17" shape="rect" alt="" coords="327,691,382,766" href="#" title="Кабинет 17" />
+			<area state="room_18" shape="rect" alt="" coords="273,691,323,766" href="#" title="Кабинет 18" />
+			<area state="room_20" shape="rect" alt="" coords="219,691,270,766" href="#" title="Кабинет 20" />
+			<area state="room_24" shape="rect" alt="" coords="192,625,232,661" href="#" title="Кабинет 24" />
+			<area state="room_25" shape="rect" alt="" coords="236,582,292,661" href="#" title="Кабинет 25" />
+			<area state="room_26" shape="rect" alt="" coords="236,530,292,578" href="#" title="Кабинет 26" />
+			<area state="room_27" shape="poly" alt="" coords="130,456,293,456,293,528,233,528,233,579,190,579,190,665,293,666,293,686,214,686,215,765,130,765" href="#" title="Кабинет 27" />
+			<area state="room_51" shape="rect" alt="" coords="192,582,232,621" href="#" title="Кабинет 51" />
+			<area state="room_32" shape="rect" alt="" coords="437,260,522,303" href="#" title="Кабинет 32" />
+			<area state="room_33" shape="rect" alt="" coords="470,307,522,362" href="#" title="Кабинет 33" />
+			<area state="room_31" shape="rect" alt="" coords="433,166,558,257" href="#" title="Кабинет 31" />
+			<area state="room_35" shape="rect" alt="" coords="561,168,603,235" href="#" title="Кабинет 35" />
+			<area state="room_34" shape="rect" alt="" coords="561,239,603,309" href="#" title="Кабинет 34" />
+			<area state="room_37" shape="rect" alt="" coords="604,260,647,309" href="#" title="Кабинет 37" />
+			<area state="room_36" shape="rect" alt="" coords="604,166,647,210" href="#" title="Кабинет 36" />
+			<area state="room_38" shape="poly" alt="" coords="649,166,774,166,774,245,823,245,823,279,738,279,738,294,649,294" href="#" title="Кабинет 38" />
+			<area state="room_39" shape="rect" alt="" coords="778,166,823,243" href="#" title="Кабинет 39" />
+			<area state="room_42" shape="rect" alt="" coords="1017,333,1059,403" href="#" title="Кабинет 42" />
+			<area state="room_40" shape="rect" alt="" coords="1062,333,1104,403" href="#" title="Кабинет 40" />
+			<area state="room_43" shape="rect" alt="" coords="1106,313,1161,403" href="#" title="Кабинет 43" />
+
+			<area state="room_49" shape="poly" alt="" coords="926,229,973,229,973,167,1012,167,1012,282,926,282" href="#" title="Кабинет 49" />
+			<area state="room_50" shape="rect" alt="" coords="927,166,970,224" href="#" title="Кабинет 50" />
+
+			<area state="room_52" shape="rect" alt="" coords="604,215,647,257" href="#" title="Кабинет 52" />
+			
+			<area state="room_28" shape="poly" alt="" coords="189,259,354,261,354,315,293,315,293,452,189,452" href="#" title="Кабинет 28" />
+			<area state="room_29" shape="rect" alt="" coords="243,167,338,259" href="#" title="Кабинет 29" />
+			<area state="room_30" shape="rect" alt="" coords="322,422,385,582" href="#" title="Кабинет 30" />
+			<!-- <area state="room_5" shape="poly" alt="" coords="108,73,110,63,117,59,125,58,126,52,121,44,112,38,114,29,116,24,124,24,132,21,146,29,152,39,143,43,133,44,132,52,133,59,139,65,135,70,123,73,117,69,112,73" href="polygon" title="Место для  переговоров" /> -->
+			<area state="room_46" shape="rect" alt="" coords="1153,166,1195,235" href="#" title="Кабинет 46" />
+			<area state="room_47" shape="poly" alt="" coords="1065,166,1149,166,1149,311,1067,311,1066,282,1014,282,1014,245,1065,245,1065,166" href="#" title="Кабинет 47" />
+			<area state="room_48" shape="rect" alt="" coords="1013,166,1061,241" href="#" title="Кабинет 48" />
+			<area shape="default" nohref="nohref" alt="" />
+			<area state="room_71" shape="rect" alt="" coords="1832,754,1902,826" href="#" title="Кабинет 71" />
+			<area state="room_72" shape="rect" alt="" coords="1742,754,1830,826" href="#" title="Кабинет 72" />
+			<area state="room_73" shape="rect" alt="" coords="1686,754,1739,826" href="#" title="Кабинет 73" />
+			<area state="room_74" shape="rect" alt="" coords="1628,754,1683,826" href="#" title="Кабинет 74" />
+			<area state="room_80" shape="rect" alt="" coords="1525,309,1626,578" href="#" title="Кабинет 80" />
+			<area state="room_84" shape="rect" alt="" coords="1462,448,1523,552" href="#" title="Кабинет 84" />
+			<area state="room_86" shape="poly" alt="" coords="1629,214,1678,214,1678,258,1692,258,1692,308,1629,308" href="#" title="Кабинет 86" />
+			<area state="room_100" shape="rect" alt="" coords="561,402,646,661" href="#" title="Лифтовый холл" />
+		</map>
+	
+	<script>
+		Array.prototype.unique = function () {
+	    var o = {}, i, l = this.length,
+	        r = [];
+	    for (i = 0; i < l; i += 1) o[this[i]] = this[i];
+	    for (i in o) r.push(o[i]);
+	    return r;
+		};
+	$(document).ready(function () {
+	    var img = $('#plan'),
+	        list = $('#boundList');
+
+		// var states = Array.prototype.map.call($('area'),
+	 //    function (e) {
+	 //    	var room = e.getAttribute('state') .text(e)
+	 //        return e.getAttribute('state');
+	 //    }).unique()
+	 //        .sort()
+	 //        .forEach(function (e) {
+	 //        var el = $('<li />').attr('state', e).text(e);
+	 //        list.append(el);
+
+		// var states = Array.prototype.map.call($('area'),
+	 //    function (e) {
+	 //        return e.getAttribute('state');
+	 //    }).unique()
+	 //        .sort()
+	 //        .forEach(function (e) {
+	 //        var el = $('<li />').attr('state', e).text(e);
+	 //        list.append(el);
+
+  //   });
+		$('#plan').mapster({
+			selected: true,
+			// render_highlight: {
+   //          strokeWidth: 2
+   //      	},
+			fillColor: 'CCCCCC', // добавляем цвет при наведении
+			fillOpacity: 0.6, // добавляем прозрачность цвета при наведении
+			staticState: true, // для показа выделенной области
+			showToolTip: true, // указываем, что нужно показывать toolTip
+			render_select: {
+		         fillColor: '000000',
+		         fillOpacity: 0.3
+		       },
+			mapKey: 'state', // добавляем тот идентификатор,
+										// по которому мы будем обращаться
+										// к конктретной области
+						areas: [
+				{
+					key: "room_1", 
+					toolTip: $('[state = "room_1"]').attr('title')
+				},
+				{
+					key: "room_2", 
+					toolTip: $('[state = "room_2"]').attr('title')
+				},
+				{
+					key: "room_3", 
+					toolTip: $('[state = "room_3"]').attr('title')
+				},
+				{
+					key: "room_4", 
+					toolTip: $('[state = "room_4"]').attr('title')
+				},
+				{
+					key: "room_5", 
+					toolTip: $('[state = "room_5"]').attr('title')
+				}
+			],
+	        boundList: list.find('li'),
+			listKey: 'state',
+			listSelectedClass: 'selected'
+		});
+
+			$(document).on('mouseenter','#boundList td',function(e) {
+	       
+		        var el = $(e.target);
+		       // el.toggleClass('selected');
+		        //debugger;
+		        $('#plan').mapster('set',null,el.attr('state'),options = { fillColor:'18b1c9', fillOpacity: 0.79, staticState: true }); 
+		        // changing selections manually doesn't result in the boundList
+		        // being fired, we still have to set the state on the list item		       
+			    }).on('mouseleave','#boundList td',function(e) {
+			       e.preventDefault();			        
+			        $('#plan').mapster('set',false,$('#plan').mapster('get'));
+			});
+		});
+
+  			$(document).click('#btn1',function(e) {
+	       
+		        // var el = $(e.target);
+		       	// el.addClass('d-none');
+		       	$('#btn1').addClass('d-none');
+		       	$('#form1').removeClass('d-none')
+		        //debugger;
+
+		        // changing selections manually doesn't result in the boundList
+		        // being fired, we still have to set the state on the list item      
+			    })
+			$(document).on('click','#boundList tr',function(e) {
+
+				var el = $(e.target).parent();
+				// el.toggleClass('selected');
+				//debugger;
+				$('#fio').text(el.children()[0].outerText); 
+				$('#position').text(el.children()[1].outerText);
+				$.get('/static/img/' + el.children()[0].outerText + '.jpg' )
+				.done(function() { $('#imp_foto').attr( 'src','/static/img/' + el.children()[0].outerText + '.jpg' )})
+				.fail(function() { $('#imp_foto').attr( 'src','/static/img/nophoto_200.png') })
+				// if ( $('#imp_foto').attr( 'src','/static/img/' + el.children()[0].outerText + '.jpg' ).onload ){
+				// 	$('#imp_foto').attr( 'src','/static/img/' + el.children()[0].outerText + '.jpg' )
+				// }
+				// else{
+				// 	$('#imp_foto').attr( 'src','/static/img/nophoto_200.png')
+				// }
+				// changing selections manually doesn't result in the boundList
+				// being fired, we still have to set the state on the list item		       
+			})
+			// .on('mouseleave','#boundList td',function(e) {
+			// 	e.preventDefault();			        
+			// 	$('#plan').mapster('set',false,$('#plan').mapster('get'));
+			// });
+	</script>
+	
+
+
+
+	<table style="font-size: 0.8rem;" class="table"  id='boundList'>
+	  <thead class="thead-dark">
+	    <tr>
+			{% for post in headers %}
+			<th scope="col">{{post}}</th>
+			{% endfor %}
+	    </tr>
+	  </thead>
+	  <tbody>
+		{% for key in posts.keys()%}
+		<tr>
+ 			<td state="room_{{ posts[key]['location'] }}" >{{key}}</td>
+			<td state="room_{{ posts[key]['location'] }}" >{{posts[key]['position']}}</td>
+			<td state="room_{{ posts[key]['location'] }}" >{{posts[key]['mtel']}}</td>
+			<td state="room_{{ posts[key]['location'] }}" >{{posts[key]['tel']}}</td>		
+			<td state="room_{{ posts[key]['location'] }}" >{{posts[key]['location']}}</td>
+			<td state="room_{{ posts[key]['location'] }}" >{{posts[key]['mail']}}</td>
+			<td state="room_{{ posts[key]['location'] }}" >{{posts[key]['birthday']}}</td>	
+		</tr>
+		{% endfor %}
+	    </tr>
+	  </tbody>
+	</table>
+	<div class="wrapper">
+		<div class="infoEmployer">
+			<img  class="fotoEmployer" src="{{ url_for('static', filename='img/nophoto_200.png') }}" id="imp_foto" />
+			<!-- <h6 id="department">Служба разработки</h6>  -->
+			<h6 id="position" >  Руководитель службы </h6>
+			<h6 id="fio">Иванов Сергей Николаевич</h6>
+		</div>
+	</div>
+
+	</div>
+</div>	
+
+</body>
+</html>
+
+
+
+

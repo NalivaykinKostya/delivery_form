@@ -1,0 +1,93 @@
+<!-- <!DOCTYPE html> -->
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>{{title}}</title>
+	<link rel="icon" type="image/png" sizes="16x16" href="http://aoglonass.ru/templates/default//favicon/favicon-16x16.png">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+	<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/fdgs.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/GoogleMap.js') }}"></script>
+	<!-- <script src="{{ url_for('static', filename='js/refresh_token.js') }}"></script>	 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+	<a href="/">главная</a>	
+	<table class="table">
+	  <thead class="thead-dark">
+	    <tr>
+			{% for post in headers %}
+			<th scope="col">{{post}}</th>
+			{% endfor %}
+	    </tr>
+	  </thead>
+	  <tbody>
+		{% for item in posts %}
+		<tr>
+			{% for elem in item.values() %}
+				<td>{{elem}}</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+<!-- 	      <th scope="row">1</th>
+	      <td>Mark</td>
+	      <td>Otto</td>
+	      <td>@mdo</td>
+	    </tr>
+	    <tr>
+	      <th scope="row">2</th>
+	      <td>Jacob</td>
+	      <td>Thornton</td>
+	      <td>@fat</td>
+	    </tr>
+	    <tr>
+	      <th scope="row">3</th>
+	      <td>Larry</td>
+	      <td>the Bird</td>
+	      <td>@twitter</td> -->
+	    </tr>
+	  </tbody>
+	</table>
+<!-- 	{{posts}} -->
+<!-- 	{% for item in posts %}
+		<p>{{item.values()}}</p>
+	{% endfor %} -->
+
+	<br>
+	<div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+	<div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>
+	 
+	<div id="loader"></div>
+	 
+	<p id="re"></p>
+	 
+	<input type="button" class="btn btn-success" id = "b1"  onclick="insert_value()" value="Insert" />
+	<input type="button" class="btn btn-success" onclick="read_value()" value="ReadTomorrow" />
+	<input type="button" class="btn btn-success" onclick="read_value2()" value="ReadToday" />
+	<input type="button" class="btn btn-success" onclick="update_value()" value="Update" />
+	<input type="button" class="btn btn-success" onclick="delete_value()" value="Delete" />
+	<input type="button" class="btn btn-success" onclick="initMap()" value="PaintMap" />
+	<a href="https://docs.google.com/spreadsheets/d/1fJ1simtUe-zD0QImyXey6r72Pg9VoZBjrMYOgZkCKT0/edit?usp=sharing" target="_blank">Click here to open Spread Sheet </a>
+	<div class="container mx-auto">
+		<div id="showData" class="mt-5"></div>
+		<div id="map" style="width: 100%; height: 500px;"></div>		
+	</div>
+
+</div>
+
+</body>
+</html>
+
+
+
+
